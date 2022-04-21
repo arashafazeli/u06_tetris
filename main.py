@@ -5,24 +5,24 @@ WINDOW_WIDTH = 480
 WINDOW_HEIGHT = 718
 
 # Color constants
-VIOLET = (237, 201, 255)
-TAUPE = (119,160, 169)
-PEACH = (255, 185, 151)
-PURPLE = (127, 90, 131)
-CHERRY = (140, 33, 85)
-LIGHT = (255, 219, 201)
-LINES = (255, 183, 146)
+COLOR_VIOLET = (237, 201, 255)
+COLOR_TAUPE = (119,160, 169)
+COLOR_PEACH = (255, 185, 151)
+COLOR_PURPLE = (127, 90, 131)
+COLOR_CHERRY = (140, 33, 85)
+COLOR_LIGHT = (255, 219, 201)
+COLOR_LINES = (255, 183, 146)
 
 def drawGrid():
     blockSize = 30
     for x in range(0, WINDOW_WIDTH, blockSize):
         for y in range(0, WINDOW_HEIGHT, blockSize):
             grid = pygame.Rect(x, y, blockSize, blockSize)
-            pygame.draw.rect(window, LINES, grid, 1)
+            pygame.draw.rect(window, COLOR_LINES, grid, 1)
 
 # Game board (window)
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-window.fill(LIGHT)
+window.fill(COLOR_LIGHT)
 
 # Shapes class
 class Shape(object):
