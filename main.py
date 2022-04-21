@@ -13,6 +13,17 @@ COLOR_CHERRY = (140, 33, 85)
 COLOR_LIGHT = (255, 219, 201)
 COLOR_LINES = (255, 183, 146)
 
+# Import pygame.locals for easier access to key coordinates
+from pygame.locals import (
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
+
 def drawGrid():
     blockSize = 30
     for x in range(0, WINDOW_WIDTH, blockSize):
@@ -27,7 +38,7 @@ window.fill(COLOR_LIGHT)
 # Shapes class
 class Shape(object):
     rows = 20
-    columns = 20
+    columns = 24
 
     def __init__(self, column, row, shape, color):
         self.column = column
@@ -48,8 +59,15 @@ while running:
     # Draw out grid
     drawGrid()
 
+    # Listen for user events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                running = False
 
     pygame.display.flip()
+
+pygame.quit()
