@@ -175,7 +175,7 @@ def convert_shape_format(shape):
         row = list(line)
         for j, column in enumerate(row):
             if column == '0':
-                positions.append((shape.x + j, shape.y + i))
+                positions.append((shape.col + j, shape.row + i))
 
     for i, pos in enumerate(positions):
         positions[i] = (pos[0] - 2, pos[1] - 4)
@@ -221,10 +221,8 @@ def main():
     grid = create_grid()
 
     # Variable to keep the main loop running
-    change_piece = False
     running = True
     current_piece = get_shape()
-    next_piece = get_shape()
     clock = pygame.time.Clock()
     fall_time = 0
 
@@ -235,13 +233,39 @@ def main():
         fall_time += clock.get_rawtime()
         clock.tick()
 
+        # Let the current shape fall
+        if fall_time/1000 >= fall_speed:
+            fall_time = 0
+            current_piece.row += 1
+            # Todo: check if its posible to fall one more step
+
         # Listen for user events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.display.quit()
                 quit()
-        
+
+            #Todo: Check if its posible to move the shape
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    current_piece.col -= 1
+                if event.key == K_RIGHT:
+                    current_piece.col += 1
+                if event.key == K_DOWN:
+                    current_piece.row += 1
+                if event.key == K_UP:
+                    pass
+                    #Todo: Make shape rotate
+
+        shape_pos = convert_shape_format(current_piece)
+
+        # Draw out shape
+        for i in range(len(shape_pos)):
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+            
         draw_screen(window)
         pygame.display.update()        
 
