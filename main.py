@@ -1,17 +1,17 @@
 import pygame
 
 # Define constants for the screen width and height
-WINDOW_WIDTH = 480
-WINDOW_HEIGHT = 718
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 700
 
-# Color constants
-COLOR_VIOLET = (237, 201, 255)
-COLOR_TAUPE = (119,160, 169)
-COLOR_PEACH = (255, 185, 151)
-COLOR_PURPLE = (127, 90, 131)
-COLOR_CHERRY = (140, 33, 85)
-COLOR_LIGHT = (255, 219, 201)
-COLOR_LINES = (255, 183, 146)
+# Define constants for the play area with and height
+PLAY_WIDTH = 300
+PLAY_HEIGHT = 600
+
+# Global variables
+block_size = 30
+top_left_x = (SCREEN_WIDTH - PLAY_WIDTH) // 2
+top_left_y = SCREEN_HEIGHT - PLAY_HEIGHT
 
 # Import pygame.locals for easier access to key coordinates
 from pygame.locals import (
@@ -19,10 +19,20 @@ from pygame.locals import (
     K_DOWN,
     K_LEFT,
     K_RIGHT,
-    K_ESCAPE,
     KEYDOWN,
     QUIT,
 )
+
+# Color constants
+S_COLOR = (237, 201, 255)
+Z_COLOR = (119,160, 169)
+I_COLOR = (255, 185, 151)
+O_COLOR = (127, 90, 131)
+J_COLOR = (140, 33, 85)
+L_COLOR = (22, 93, 108)
+T_COLOR = (232, 131, 180)
+BG_COLOR = (255, 219, 201)
+GRID_COLOR = (255, 183, 146)
 
 def drawGrid():
     blockSize = 30
@@ -30,6 +40,9 @@ def drawGrid():
         for y in range(0, WINDOW_HEIGHT, blockSize):
             grid = pygame.Rect(x, y, blockSize, blockSize)
             pygame.draw.rect(window, COLOR_LINES, grid, 1)
+
+def drawShape():
+    pygame.draw.rect(window, COLOR_CHERRY, rect)
 
 # Game board (window)
 window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -39,7 +52,6 @@ window.fill(COLOR_LIGHT)
 class Shape(object):
     rows = 20
     columns = 24
-
     def __init__(self, column, row, shape, color):
         self.column = column
         self.row = row
