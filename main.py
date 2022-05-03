@@ -1,4 +1,6 @@
+from lib2to3.pygram import python_grammar_no_print_statement
 import pygame
+import random
 
 # Define constants for the screen width and height
 SCREEN_WIDTH = 800
@@ -142,52 +144,92 @@ T = [['.....',
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [S_COLOR, Z_COLOR, I_COLOR, O_COLOR, J_COLOR, L_COLOR, T_COLOR]
 
-def drawGrid():
-    blockSize = 30
-    for x in range(0, WINDOW_WIDTH, blockSize):
-        for y in range(0, WINDOW_HEIGHT, blockSize):
-            grid = pygame.Rect(x, y, blockSize, blockSize)
-            pygame.draw.rect(window, COLOR_LINES, grid, 1)
-
-def drawShape():
-    pygame.draw.rect(window, COLOR_CHERRY, rect)
-
-# Game board (window)
-window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-window.fill(COLOR_LIGHT)
-
-# Shapes class
 class Shape(object):
-    rows = 20
-    columns = 24
-    def __init__(self, column, row, shape, color):
-        self.column = column
+    def __init__(self, column, row, shape):
+        self.col = column
         self.row = row
         self.shape = shape
-        self.color = color
+        self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0
+
+def create_grid():
+    '''
+    To keep track on locked positions
+    '''
+
+    grid = [[BG_COLOR for x in range(10)] for x in range(20)]
+
+    #TODO: check for locked positions
+
+    return grid
+
+def draw_grid(surface, row, col):
+    '''
+    Draw line for every row and column in play area
+    pygame.draw.line(surface, color, start_pos(coordinates), end_pos(coordinates))
+    '''
+    for i in range (row):
+        # Start pos = upper left, End pos = end of play area
+        # Y increased by block_size to get right spacing
+        pygame.draw.line(surface, GRID_COLOR, (top_left_x, top_left_y + i * block_size), (top_left_x + PLAY_WIDTH, top_left_y + i * block_size))
+        for j in range(col):
+            pygame.draw.line(surface, GRID_COLOR, (top_left_x + j * block_size, top_left_y), (top_left_x + j * block_size, top_left_y + PLAY_HEIGHT))
+
+def draw_screen(surface):
+    surface.fill(BG_COLOR)
+
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j * block_size, top_left_y + i * block_size, block_size, block_size), 0)
+
+    draw_grid(surface, 20, 10)
+
+    # Draw out play area border
+    pygame.draw.rect(surface, GRID_COLOR, (top_left_x, top_left_y, PLAY_WIDTH, PLAY_HEIGHT), 5)
+
+def get_shape():
+    '''
+    Returns a random shape format from list of shapes
+    '''
+    return Shape(5, 0, random.choice(shapes))
 
 # Initialize pygame
 pygame.init()
 
-# Variable to keep the main loop running
-running = True
-
 # Main game loop
-while running:
+def main():
+    global grid 
+    grid = create_grid()
 
-    # Draw out grid
-    drawGrid()
+    # Variable to keep the main loop running
+    change_piece = False
+    running = True
+    current_piece = get_shape()
+    next_piece = get_shape()
+    clock = pygame.time.Clock()
+    fall_time = 0
 
-    # Listen for user events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            
-        if event.type == KEYDOWN:
-            if event.key == K_ESCAPE:
+    while running:
+
+        # Keep track of fall time
+        fall_speed = .27
+        fall_time += clock.get_rawtime()
+        clock.tick()
+
+        # Listen for user events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
                 running = False
+                pygame.display.quit()
+                quit()
+        
+        draw_screen(window)
+        pygame.display.update()        
 
-    pygame.display.flip()
+def main_menu():
+    main()
 
-pygame.quit()
+window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption('Tetris')
+
+main_menu() # Start gane
