@@ -355,7 +355,7 @@ def main(win):  # *
         pygame.display.update()
 
         if check_lost(locked_positions):
-            draw_text_middle(win, "YOU LOST!", 80, (255,255,255))
+            draw_text_middle(win, "YOU LOST!", 80, (255, 255, 255))
             pygame.display.update()
             pygame.time.delay(1500)
             run = False
@@ -366,7 +366,7 @@ def main_menu(win):  # *
     run = True
     while run:
         win.fill((0,0,0))
-        draw_text_middle(win, 'Press Any Key To Play', 60, (255,255,255))
+        draw_text_middle(win, 'Press Any Key To Play', 60, (255, 255, 255))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
