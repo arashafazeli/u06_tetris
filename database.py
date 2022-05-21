@@ -28,3 +28,4 @@ def add_score(score_list):
 
 connection = sqlite3.connect("data_u06.db")
 create_tables()
+
