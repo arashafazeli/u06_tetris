@@ -9,7 +9,8 @@ docker build .
 
 To play this game, clone this repo, change directory and run ```./main_modified.py``` file.
 ## How to play?
-You can control falling tetromino as in the classic NES version:
+
+The following list contains used control keys:
 |Arrow|Action|
 |:-:	|:-:	|
 | ↑ 	| rotates tetromino clockwise 	|
