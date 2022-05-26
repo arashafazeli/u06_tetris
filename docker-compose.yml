@@ -4,6 +4,10 @@ version: '3.8'
 services:
   tetris:
     build: .
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
     container_name: tetris_app
     command:  python /u06_tetris/main_modified.py
 
